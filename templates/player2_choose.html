@@ -1,23 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rock Paper Scissors</title>
-</head>
+{% extends 'base.html' %}
+
+{% block content %}
 <body>
     <p>{{title}}</p>
-    <form action="/<player1_choice>/" method="POST">
-        <label for="name">Name</label>
+    <form method="POST">
+        <label for="name",>Name</label>
         <input type="text" name="Name" id="Name">
         <label for="choice">Choose what you want to play</label>
-        <select name="Choice" id="choice">
-            <option value="rock">Rock</option>
-            <option value="paper">Paper</option>
-            <option value="scissors">Scissors</option>
-        </select>
-        <button type="submit">Submit</button>
+        <button formaction="/{{choice}}/rock"> Rock </button>
+        <button formaction="/{{choice}}/paper"> Paper </button>
+        <button formaction="/{{choice}}/scissors"> Scissors </button>
     </form>
     </body>
 </html>
+
+{% endblock  %}

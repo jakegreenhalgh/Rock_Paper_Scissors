@@ -1,39 +1,50 @@
+from crypt import methods
 from flask import render_template, request, redirect
 from app import app
 from models.game import Game
 from models.player import Player
-from models.players import *
 
-@app.route('/')
-def index():
-    return render_template('index.html', title = 'Player 1 enter')
+@app.route('/play')
+def play():
+    return render_template('player1_choose.html', title = 'Player 1 enter')
 
-@app.route('/', methods=['POST'])
-def player1chooses():
-    player1_name = request.form["name"]
-    player1_choice = request.form["choice"]
-    player1 = Player(name = player1_name, choice = player1_choice)
-    return redirect ('/<player1_choice>/')
+@app.route('/play', methods=['POST'])
+def player1chooses(choice):
+    global player1
+    player1_name = request.form["Name"]
+    player1_choice = choice
+    player1 = Player(player1_name, player1_choice)
+    return render_template("player2_choose.html", choice=player1_choice, title='Player 2 enter')
 
-@app.route('/<player1_choice>/', methods = ["POST"])
-def player2_choice():
-    return render_template('player2_choose.html', title='Player 2 enter')
+# @app.route('/<choice>')
+# def player2_choice():
+#     return render_template('player2_choose.html', )
 
-@app.route('/<player1_choice>/', methods=['POST'])
-def player2chooses():
-    player2_name = request.form["name"]
-    player2_choice = request.form["choice"]
-    player2 = Player(name = player2_name, choice = player2_choice)
-    redirect ('/player1_choice/player2_choice/')
+@app.route('/<choice>', methods=['POST'])
+def player2chooses(choice, choice2):
+    global player2
+    player2_name = request.form["Name"]
+    player2_choice = choice2
+    player2 = Player(player2_name, player2_choice)
+    return render_template('results_page.html', player1 = player1, player2 = player2, results = Game.get_results(player1, player2))
 
-@app.route('/<player1_choice>/<player2_choice>/')
-def return_results():
-    return render_template('results_page.html', player1 = player1, player2 = player2)
+# @app.route('/<choice>/<choice2>')
+# def return_results():
+#     return render_template('results_page.html', player1 = player1, player2 = player2, results = results)
 
-@app.route('/<player1_choice>/<player2_choice>/')
-def results():
-    game1 = Game(player1 = player1, player2 = player2)
-    game_result = game1.play_r_p_s()
+
+@app.route('/computer')
+def computer_page():
+    return render_template('computer.html', title='Player enter')
+
+@app.route('/computer/<choice>', methods=['POST'])
+def play_computer(choice):
+    global player
+    player_name = request.form["Name"]
+    player_choice = choice
+    player = Player(player_name, player_choice)
+    return render_template('results_page.html', player1 = player, player2 = Game.play_comp(), results = Game.get_results(player, Game.play_comp()))
+
 
 
 
