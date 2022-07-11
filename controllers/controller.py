@@ -16,9 +16,6 @@ def player1chooses(choice):
     player1 = Player(player1_name, player1_choice)
     return render_template("player2_choose.html", choice=player1_choice, title='Player 2 enter')
 
-# @app.route('/<choice>')
-# def player2_choice():
-#     return render_template('player2_choose.html', )
 
 @app.route('/<choice>', methods=['POST'])
 def player2chooses(choice, choice2):
@@ -27,11 +24,6 @@ def player2chooses(choice, choice2):
     player2_choice = choice2
     player2 = Player(player2_name, player2_choice)
     return render_template('results_page.html', player1 = player1, player2 = player2, results = Game.get_results(player1, player2))
-
-# @app.route('/<choice>/<choice2>')
-# def return_results():
-#     return render_template('results_page.html', player1 = player1, player2 = player2, results = results)
-
 
 @app.route('/computer')
 def computer_page():
